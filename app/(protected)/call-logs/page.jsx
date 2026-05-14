@@ -369,21 +369,23 @@ function WebCallModal ({ onClose }) {
         </div>
 
         <div className="trigger-call__container__footer">
-          {isCallActive || isConnecting || isEnding ? (
+          {isCallActive || isConnecting || isEnding
+            ? (
             <>
               <Button type="button" variant="cancel" onClick={onClose}>Close</Button>
               <Button type="button" variant="danger" onClick={endCall} disabled={isEnding}>
                 {isEnding ? 'Ending…' : 'End Call'}
               </Button>
             </>
-          ) : (
+              )
+            : (
             <>
               <Button type="button" variant="cancel" onClick={onClose}>Cancel</Button>
               <Button type="button" variant="primary" onClick={startCall}>
                 Start Web Call
               </Button>
             </>
-          )}
+              )}
         </div>
 
       </div>
@@ -399,9 +401,6 @@ export default function CallLogsPage () {
   const [page, setPage] = useState(1)
   const [queryVersion, setQueryVersion] = useState(0)
   const [hasMore, setHasMore] = useState(false)
-  const [totalCount, setTotalCount] = useState(0)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [listDateRange, setListDateRange] = useState(DATE_RANGE.all)
   const [showModal, setShowModal] = useState(false)
   const [showWebCallModal, setShowWebCallModal] = useState(false)
 
@@ -440,7 +439,6 @@ export default function CallLogsPage () {
         const fetched = res.data || []
         if (page === 1) {
           setRows(fetched)
-          setTotalCount(res.count ?? 0)
         } else {
           setRows((prev) => {
             const seen = new Set(prev.map((r) => r.callId))
@@ -478,17 +476,6 @@ export default function CallLogsPage () {
     setQueryVersion((v) => v + 1)
     const scrollEl = findOverflowScrollParent(tableSectionRef.current)
     if (scrollEl) scrollEl.scrollTop = 0
-  }
-
-  const handleSearch = () => {
-    appliedSearchRef.current = searchTerm.trim()
-    bumpQuery()
-  }
-
-  const handleDateRangeChange = (range) => {
-    appliedDateRef.current = range
-    setListDateRange(range)
-    bumpQuery()
   }
 
   const handleTableBodyScroll = useCallback((e) => {
