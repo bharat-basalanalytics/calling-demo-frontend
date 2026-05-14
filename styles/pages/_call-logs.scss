@@ -143,6 +143,12 @@
         &:hover {
             opacity: 0.9;
         }
+
+        &--web {
+            background-color: transparent;
+            color: variables.$color-primary;
+            border: 1px solid variables.$color-primary;
+        }
     }
 
     &__col {
@@ -484,4 +490,88 @@ main.main--call-logs {
             }
         }
     }
+}
+
+// ─── Web Call Modal ───────────────────────────────────────────────────────────
+
+.web-call {
+    &__container {
+        width: 480px;
+    }
+
+    &__status {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 0 8px;
+
+        &__indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: variables.$color-primary;
+            flex-shrink: 0;
+
+            &--speaking {
+                background-color: variables.$color-red;
+                animation: web-call-pulse 1s ease-in-out infinite;
+            }
+        }
+
+        &__label {
+            font-size: 13px;
+            font-weight: 500;
+            color: variables.$color-black-primary;
+        }
+    }
+
+    &__transcript {
+        margin-top: 16px;
+        max-height: 220px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px;
+        background-color: variables.$color-white-primary;
+        border-radius: 6px;
+
+        &__msg {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+
+            &--user {
+                align-items: flex-end;
+            }
+
+            &--assistant {
+                align-items: flex-start;
+            }
+
+            &__role {
+                font-size: 10px;
+                font-weight: 600;
+                color: variables.$color-grey;
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+            }
+
+            &__text {
+                font-size: 12px;
+                line-height: 1.5;
+                color: variables.$color-black-primary;
+                background-color: variables.$color-white;
+                padding: 8px 12px;
+                border-radius: 8px;
+                max-width: 85%;
+                border: 1px solid variables.$color-white-secondary;
+            }
+        }
+    }
+}
+
+@keyframes web-call-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
 }

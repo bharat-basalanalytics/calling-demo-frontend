@@ -10,6 +10,9 @@ import {
   useTriggerCallMutation
 } from '@/store'
 import Button from '@/components/ui/Button'
+import CONSTANTS from '@/constants'
+
+const { default: Vapi } = await import('@vapi-ai/web')
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -242,6 +245,152 @@ function TriggerCallModal ({ onClose, onSuccess }) {
   )
 }
 
+// ─── Web Call Modal ───────────────────────────────────────────────────────────
+
+const WEB_CALL_ASSISTANT_ID = '741775a3-fbe6-4753-a544-58754a371c2a'
+
+const WEB_CALL_STATUS = {
+  idle: 'idle',
+  connecting: 'connecting',
+  active: 'active',
+  ending: 'ending'
+}
+
+function WebCallModal ({ onClose }) {
+  const [status, setStatus] = useState(WEB_CALL_STATUS.idle)
+  const [isSpeaking, setIsSpeaking] = useState(false)
+  const [transcript, setTranscript] = useState([])
+  const vapiRef = useRef(null)
+  const transcriptEndRef = useRef(null)
+
+  useEffect(() => {
+    transcriptEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [transcript])
+
+  useEffect(() => {
+    return () => {
+      vapiRef.current?.stop()
+    }
+  }, [])
+
+  const startCall = async () => {
+    const publicKey = CONSTANTS.VAPI_PUBLIC_KEY
+    if (!publicKey) {
+      return toast.error('Set calling credentials')
+    }
+
+    const vapi = new Vapi(publicKey)
+    vapiRef.current = vapi
+
+    vapi.on('call-start', () => setStatus(WEB_CALL_STATUS.active))
+    vapi.on('call-end', () => {
+      setStatus(WEB_CALL_STATUS.idle)
+      setIsSpeaking(false)
+    })
+    vapi.on('speech-start', () => setIsSpeaking(true))
+    vapi.on('speech-end', () => setIsSpeaking(false))
+    vapi.on('message', (msg) => {
+      if (msg.type === 'transcript' && msg.transcriptType === 'final') {
+        setTranscript((prev) => [...prev, { role: msg.role, text: msg.transcript }])
+      }
+    })
+    vapi.on('error', (err) => {
+      console.error('VAPI error', err)
+      toast.error(err?.message || 'Web call error')
+      setStatus(WEB_CALL_STATUS.idle)
+    })
+
+    setStatus(WEB_CALL_STATUS.connecting)
+    setTranscript([])
+    try {
+      await vapi.start(WEB_CALL_ASSISTANT_ID)
+    } catch (err) {
+      toast.error(err?.message || 'Failed to start web call')
+      setStatus(WEB_CALL_STATUS.idle)
+    }
+  }
+
+  const endCall = () => {
+    setStatus(WEB_CALL_STATUS.ending)
+    vapiRef.current?.stop()
+  }
+
+  const isCallActive = status === WEB_CALL_STATUS.active
+  const isConnecting = status === WEB_CALL_STATUS.connecting
+  const isEnding = status === WEB_CALL_STATUS.ending
+
+  return (
+    <div className="trigger-call" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="trigger-call__container web-call__container">
+
+        <div className="trigger-call__container__header">
+          <span className="trigger-call__container__header__title">Web Call</span>
+          <button
+            type="button"
+            className="trigger-call__container__header__close"
+            onClick={onClose}
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="trigger-call__container__body">
+
+          {!isCallActive && !isConnecting && !isEnding && (
+            <p style={{ fontSize: 13, color: '#666', margin: '8px 0 4px' }}>
+              Click <strong>Start Web Call</strong> to connect directly from your browser.
+            </p>
+          )}
+
+          {(isCallActive || isConnecting || isEnding) && (
+            <div className="web-call__status">
+              <div className={`web-call__status__indicator${isSpeaking ? ' web-call__status__indicator--speaking' : ''}`} />
+              <span className="web-call__status__label">
+                {isConnecting && 'Connecting…'}
+                {isEnding && 'Ending call…'}
+                {isCallActive && (isSpeaking ? 'Assistant speaking…' : 'Listening…')}
+              </span>
+            </div>
+          )}
+
+          {transcript.length > 0 && (
+            <div className="web-call__transcript">
+              {transcript.map((msg, i) => (
+                <div key={i} className={`web-call__transcript__msg web-call__transcript__msg--${msg.role}`}>
+                  <span className="web-call__transcript__msg__role">{msg.role === 'user' ? 'You' : 'Assistant'}</span>
+                  <span className="web-call__transcript__msg__text">{msg.text}</span>
+                </div>
+              ))}
+              <div ref={transcriptEndRef} />
+            </div>
+          )}
+
+        </div>
+
+        <div className="trigger-call__container__footer">
+          {isCallActive || isConnecting || isEnding ? (
+            <>
+              <Button type="button" variant="cancel" onClick={onClose}>Close</Button>
+              <Button type="button" variant="danger" onClick={endCall} disabled={isEnding}>
+                {isEnding ? 'Ending…' : 'End Call'}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button type="button" variant="cancel" onClick={onClose}>Cancel</Button>
+              <Button type="button" variant="primary" onClick={startCall}>
+                Start Web Call
+              </Button>
+            </>
+          )}
+        </div>
+
+      </div>
+    </div>
+  )
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function CallLogsPage () {
@@ -254,6 +403,7 @@ export default function CallLogsPage () {
   const [searchTerm, setSearchTerm] = useState('')
   const [listDateRange, setListDateRange] = useState(DATE_RANGE.all)
   const [showModal, setShowModal] = useState(false)
+  const [showWebCallModal, setShowWebCallModal] = useState(false)
 
   const tableSectionRef = useRef(null)
   const tableBodyScrollRef = useRef(null)
@@ -363,6 +513,10 @@ export default function CallLogsPage () {
         />
       )}
 
+      {showWebCallModal && (
+        <WebCallModal onClose={() => setShowWebCallModal(false)} />
+      )}
+
       {/* Header */}
       <div className="call-logs__header">
         <h1>Call logs</h1>
@@ -384,6 +538,13 @@ export default function CallLogsPage () {
               </button>
             ))}
           </div>
+          <button
+            type="button"
+            className="call-logs__trigger-btn call-logs__trigger-btn--web"
+            onClick={() => setShowWebCallModal(true)}
+          >
+            🎤 Web Call
+          </button>
           <button
             type="button"
             className="call-logs__trigger-btn"
