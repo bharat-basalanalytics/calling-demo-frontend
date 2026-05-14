@@ -521,23 +521,6 @@ export default function CallLogsPage () {
       <div className="call-logs__header">
         <h1>Call logs</h1>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <div className="call-logs__header__range">
-            {[
-              { key: DATE_RANGE.all, label: 'All' },
-              { key: DATE_RANGE.today, label: 'Today' },
-              { key: DATE_RANGE.thisWeek, label: 'This week' },
-              { key: DATE_RANGE.thisMonth, label: 'This month' }
-            ].map(({ key, label }) => (
-              <button
-                key={key}
-                type="button"
-                className={`call-logs__header__range-btn${listDateRange === key ? ' call-logs__header__range-btn--active' : ''}`}
-                onClick={() => handleDateRangeChange(key)}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
           <button
             type="button"
             className="call-logs__trigger-btn call-logs__trigger-btn--web"
@@ -556,7 +539,7 @@ export default function CallLogsPage () {
       </div>
 
       {/* Toolbar */}
-      <div className="call-logs__toolbar">
+      {/* <div className="call-logs__toolbar">
         <div className="call-logs__toolbar__row">
           <div className="call-logs__toolbar__actions">
             <div className="call-logs__toolbar__search">
@@ -576,7 +559,7 @@ export default function CallLogsPage () {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Table */}
       <section
