@@ -1,0 +1,24 @@
+@use '../abstracts/mixins' as mixins;
+@use '../abstracts/variables' as variables;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  box-sizing: border-box;
+  font-family: var(--poppins-font, sans-serif);
+  @include mixins.scrollBar;
+}
+
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  position: relative;
+}

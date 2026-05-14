@@ -1,0 +1,16 @@
+@use '../abstracts/variables' as variables;
+@use '../abstracts/mixins' as mixins;
+
+.main {
+    display: flex;
+    height: calc(100vh - variables.$navbar-height);
+    overflow: hidden;
+
+    main {
+        height: 100%;
+        flex: 1;
+        overflow-y: auto;
+
+        @include mixins.scrollBar;
+    }
+}

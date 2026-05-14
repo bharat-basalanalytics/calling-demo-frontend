@@ -1,0 +1,25 @@
+@use 'variables' as variables;
+
+@mixin scrollBar {
+  scrollbar-width: thin;
+  scrollbar-color: variables.$color-white-secondary variables.$color-white-primary;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: variables.$color-white-primary;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: variables.$color-white-secondary;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: variables.$color-grey;
+  }
+}

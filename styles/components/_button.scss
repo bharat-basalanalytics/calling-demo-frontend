@@ -1,0 +1,58 @@
+@use '../abstracts/variables' as variables;
+
+.btn {
+    display: flex;
+    padding: 12px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 133.333%;
+    letter-spacing: -0.36px;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    &__primary {
+        background-color: variables.$color-primary;
+        color: variables.$color-white;
+    }
+
+    &__secondary {
+        background-color: transparent;
+        color: variables.$color-primary;
+        border: 1px solid variables.$color-primary;
+    }
+
+    &__tertiary {
+        background-color: transparent;
+        color: variables.$color-grey;
+        border: 1px solid variables.$color-white-secondary;
+    }
+
+    &__cancel {
+        background-color: transparent;
+        color: variables.$color-grey;
+        border: 1px solid variables.$color-white-secondary;
+    }
+
+    &__danger {
+        background-color: variables.$color-red;
+        color: variables.$color-white;
+    }
+
+    &__white {
+        border-radius: 4px;
+        background: variables.$color-white;
+    }
+}

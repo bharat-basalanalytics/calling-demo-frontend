@@ -1,0 +1,20 @@
+@use '../abstracts/variables' as variables;
+
+.navbar {
+    padding: 16px 20px;
+    border-bottom: 1px solid variables.$color-white-primary;
+    height: variables.$navbar-height;
+    background-color: variables.$color-white;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    z-index: 8;
+
+    &__logo {
+        font-size: 16px;
+        font-weight: 600;
+        color: variables.$color-primary;
+        letter-spacing: -0.4px;
+    }
+}

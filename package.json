@@ -1,0 +1,51 @@
+{
+  "name": "callingdemoai-fe",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix"
+  },
+  "dependencies": {
+    "@react-oauth/google": "^0.12.1",
+    "@reduxjs/toolkit": "^2.6.0",
+    "@simplewebauthn/browser": "^13.2.2",
+    "comma-number": "^2.1.0",
+    "cookies-next": "^5.1.0",
+    "date-fns": "^4.1.0",
+    "firebase": "^12.11.0",
+    "libphonenumber-js": "^1.12.38",
+    "moment": "^2.30.1",
+    "next": "15.5.15",
+    "plyr": "^3.8.4",
+    "powerbi-client": "^2.23.9",
+    "react": "^19.0.0",
+    "react-autosize-textarea": "^7.1.0",
+    "react-dom": "^19.0.0",
+    "react-helmet-async": "^2.0.5",
+    "react-hot-toast": "^2.5.2",
+    "react-redux": "^9.2.0",
+    "react-select": "^5.10.2",
+    "react-stars": "^2.2.5",
+    "react-timeago": "^8.2.2",
+    "react-tooltip": "^5.28.1",
+    "recharts": "^2.15.0",
+    "redux-persist": "^6.0.0",
+    "rsuite": "^5.80.2",
+    "styled-components": "^6.1.16",
+    "us-state-codes": "^1.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.6.0",
+    "eslint-plugin-react": "^7.37.4",
+    "sass": "^1.85.1"
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+}
