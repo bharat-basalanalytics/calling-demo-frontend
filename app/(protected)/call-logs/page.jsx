@@ -94,24 +94,24 @@ function findOverflowScrollParent (node) {
 
 // ─── Status Badge ─────────────────────────────────────────────────────────────
 
-const SUCCESS_REASONS = ['customer-ended-call', 'assistant-ended-call', 'silence-timed-out']
+// const SUCCESS_REASONS = ['customer-ended-call', 'assistant-ended-call', 'silence-timed-out']
 
-function CallStatusBadge ({ status, endedReason }) {
-  const label = endedReason || status || 'unknown'
+// function CallStatusBadge ({ status, endedReason }) {
+//   const label = endedReason || status || 'unknown'
 
-  let modifier = 'grey'
-  if (endedReason) {
-    modifier = SUCCESS_REASONS.includes(endedReason) ? 'green' : 'red'
-  } else if (status === 'in-progress' || status === 'queued') {
-    modifier = 'orange'
-  }
+//   let modifier = 'grey'
+//   if (endedReason) {
+//     modifier = SUCCESS_REASONS.includes(endedReason) ? 'green' : 'red'
+//   } else if (status === 'in-progress' || status === 'queued') {
+//     modifier = 'orange'
+//   }
 
-  return (
-    <span className={`call-logs__status-badge call-logs__status-badge--${modifier}`}>
-      {label}
-    </span>
-  )
-}
+//   return (
+//     <span className={`call-logs__status-badge call-logs__status-badge--${modifier}`}>
+//       {label}
+//     </span>
+//   )
+// }
 
 const PREFERRED_ASSISTANT_PHONE = '+18578294168'
 // '+12164249473'
